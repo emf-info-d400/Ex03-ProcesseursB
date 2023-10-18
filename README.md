@@ -403,3 +403,5 @@ public class View {
 ```
 
 Bravo : vous venez de tranformer votre application qui affiche désormais les informations dans un tableau Swing minimaliste qui ressemble à cela sur Mac respectivement Windows.
+![Aperçu sur Mac](images/processeur_app_mac.png)
+![Aperçu sur Windows](images/processeur_app_windows.png)
