@@ -1,95 +1,207 @@
-# Exercice 02 : Eleves
+# Exercice 03 : Les Processeurs
 ## durée : 105'
 ## Objectifs visés :
-- Implémentation d’une classe simple
-- Création et utilisation d‘objets stockés dans un tableau
-- Création de votre première association entre classe
-## PARTIE 1 : Créer votre classe qui modélisera un élève
-Dans ce projet vous allez créer une classe Java qui représentera **un élève**.
+Utilisation de classes, fabrication et utilisation d‘objets, communication entre objets.
+Affinage progressif de la solution :
+- Partie 1 – version initiale
+- Partie 2 – surcharge de toString() puis sout() direct de l’objet, découverte des littéraux
+- Partie 3 – Formatage de nombres entiers et de nombres à virgule flottante
+- Partie 4 – Tranformation en MVC
+- Partie 5 – Changement d’Ihm sans heurts ni impacts sur le reste du projet
 
-Dans ce projet créez une classe modélisant un `Eleve`. Un `Eleve` aura comme attributs un nom et un prénom et seulement des getters. Basez-vous sur le diagramme de classe pour les informations manquantes.
+## PARTIE 1 : Créer la version initiale
+Réalisez l’application décrite ci-après. Vous trouverez toute l’information utile directement dans ce document, sous forme de :
+- diagrammes des classes => les classes à créer, leurs méthodes et attributs
+- Javadoc => description précise chacune des classes, de leurs méthodes et attributs
+- Portions de code => code qui vous est directement donné
+
+### Diagramme de classes
+
+```mermaid
+classDiagram
+
+class Processeur {
+    +int NBRE_CPU$
+    main(String[] args) void$
+}
+
+class CPU {
+    +double UNKNOWN_MIPS$
+    -String nom
+    -int annee
+    -long transistors
+    -double mips
+    +CPU(String nom, int annee, long transistors, double mips)
+    +CPU(String nom, long transistors)
+    +getAnnee() int
+    +getMips() int
+    +getNom() String
+    +getTransistors() long
+}
+note for Processeur "NBRE_CPU = 20"
+note for CPU "UNKNOWN_MIPS = .1.0"
+```
+### Javadoc
+Vous pouvez cliquer sur [ce lien pour obtenir la JavaDoc en HTML](javadoc/PARTIE1/index.html) de l'application Processeur.
+
+### Portions de code
+´´´
+/**
+ * LA méthode main() de l'application, là où tout commence mais... tout se finit-il bien là ?
+ *
+ * @param args les arguments du programme passés sur la ligne de commande
+ */
+public static void main( String[] args ) {
+
+    // Créer le tableau de CPU
+    CPU[] cpus = new CPU[ NBRE_CPU ];
+
+    // Y mettre des CPUS connus
+    cpus[ 0 ] = new CPU( "Intel 4004", 1971, 2300, 0.06 );
+    cpus[ 1 ] = new CPU( "Intel 8088", 1972, 3500, 0.06 );
+    cpus[ 2 ] = new CPU( "Intel 8086", 1978, 29000, 0.33 );
+    cpus[ 3 ] = new CPU( "Intel 80286", 1982, 134000, 1 );
+    cpus[ 4 ] = new CPU( "Intel 80386", 1985, 275000, 5 );
+    cpus[ 5 ] = new CPU( "Intel 80486", 1989, 1200000, 20 );
+    cpus[ 6 ] = new CPU( "Intel Pentium 1", 1993, 3100000, 100 );
+    cpus[ 7 ] = new CPU( "Intel Pentium 2", 1997, 7500000, 300 );
+    cpus[ 8 ] = new CPU( "Intel Pentium 3", 1999, 9500000, 510 );
+    cpus[ 9 ] = new CPU( "Intel Pentium 4", 2000, 42000000, 1700 );
+    cpus[ 10 ] = new CPU( "Intel Pentium 4 D (Prescott)", 2004, 125000000, 9000 );
+    cpus[ 11 ] = new CPU( "Intel Core 2 Duo (Conroe)", 2006, 291000000, 22000 );
+    cpus[ 12 ] = new CPU( "Intel Core i7 (Quad)", 2008, 731000000, 82300 );
+    cpus[ 13 ] = new CPU( "Intel Core i7 (Gulftown)", 2010, 1170000000, 147600 );
+    cpus[ 14 ] = new CPU( "Intel Core i7 (Haswell-E)", 2014, 2600000000L, 238310 );
+    cpus[ 15 ] = new CPU( "Oracle SPARC M7", 2015, 10000000000L );
+
+    // Passer en revue chaque CPU de notre liste
+    for ( int i = 0; i < cpus.length; i++ ) {
+        CPU cpu = cpus[ i ];
+        // Y a-t-il un CPU à cet endroit ?
+        if ( cpu != null ) {
+            // Oui. Alors l'afficher !
+            if ( cpu.getMips() == UNKNOWN_MIPS ) {
+                System.out.println( "En " + cpu.getAnnee() + " le CPU " + cpu.getNom() + " avec " + cpu.getTransistors() + 
+" transistors et une puissance de calcul inconnue." );
+            } else {
+                System.out.println( "En " + cpu.getAnnee() + " le CPU " + cpu.getNom() + " avec " + cpu.getTransistors() + 
+" transistors et une puissance de calcul de " + cpu.getMips() + " mips." );
+            }
+        }
+    }
+}
+´´´
+## PARTIE 2 : Surchage de la méthode toString() et découverte des littéraux
+Faites-en sorte qu’un objet `CPU` sache se représenter lui-même sous forme de chaîne de caractères. Pour cela, surchargez sa méthode `toString()` et implémentez-là comme précédemment (= de façon à ce qu’elle produise la même représentation textuelle qu’avant).
+
+Depuis le `main()`, dans la boucle d’affichage des éléments de la liste, faites directement un sout de l’objet (qui saura désormais se représenter sous forme de String).
+
+### Question(s)
+
+Pourquoi y a-t-il un **L** majuscule à la fin des deux dernières valeurs utilisées pour exprimer le nombre de transistors ?
+
+```
+    cpus[ 14 ] = new CPU( "Intel Core i7 (Haswell-E)", 2014, 2600000000L, 238310 );
+    cpus[ 15 ] = new CPU( "Oracle SPARC M7", 2015, 10000000000L );
+```
+
+Consigner votre réponse dans le fichier [REPONSES.md](REPONSES.md) et également dans votre documentation de projet.
+## PARTIE 3 : Formatage de nombres entiers et de nombres à virgule flottante
+Lorsqu’on affiche des objets CPU à l’écran cela donne des lignes qui ressemblent à ceci :
+```
+En 1971 le CPU Intel 4004 avec 2300 transistors et une puissance de calcul de 0.06 mips.
+En 1972 le CPU Intel 8088 avec 3500 transistors et une puissance de calcul de 0.06 mips.
+En 1978 le CPU Intel 8086 avec 29000 transistors et une puissance de calcul de 0.33 mips.
+En 1982 le CPU Intel 80286 avec 134000 transistors et une puissance de calcul de 1.0 mips.
+.
+.
+.
+En 2010 le CPU Intel Core i7 (Gulftown) avec 1170000000 transistors et une puissance de calcul de 147600.0 mips.
+En 2014 le CPU Intel Core i7 (Haswell-E) avec 2600000000 transistors et une puissance de calcul de 238310.0 mips.
+En 2015 le CPU Oracle SPARC M7 avec 10000000000 transistors et une puissance de calcul inconnue.
+```
+Ce que nous aimerions, c’est un affichage plus lisible des nombres entiers et des nombres à virgule flottante, de cette manière :
+```
+En 1971 le CPU Intel 4004 avec 2'300 transistors et une puissance de calcul de 0.06 mips.
+En 1972 le CPU Intel 8088 avec 3'500 transistors et une puissance de calcul de 0.06 mips.
+En 1978 le CPU Intel 8086 avec 29'000 transistors et une puissance de calcul de 0.33 mips.
+En 1982 le CPU Intel 80286 avec 134'000 transistors et une puissance de calcul de 1.00 mips.
+.
+.
+.
+En 2010 le CPU Intel Core i7 (Gulftown) avec 1'170'000'000 transistors et une puissance de calcul de 147'600.00 mips.
+En 2014 le CPU Intel Core i7 (Haswell-E) avec 2'600'000'000 transistors et une puissance de calcul de 238'310.00 mips.
+En 2015 le CPU Oracle SPARC M7 avec 10'000'000'000 transistors et une puissance de calcul inconnue.
+```
+Modifiez la surcharge de la méthode `toString()` de la classe `CPU`. Utilisez les formateurs adéquats pour formater les nombres entiers et les nombres à virgule flottante sous la forme désirée.
+
+Testez ensuite votre programme avec soin, pas par pas avec le débogueur.
+## PARTIE 4 : Transformation en MVC
+Nous allons maintenant ré-écrire cette application sous une forme et une structure plus professionnelle. Vous trouverez toute l’information utile directement dans ce document, sous forme de :
+- diagrammes des classes => les classes à créer, leurs méthodes et attributs
+- diagrammes de séquence => la séquence d’opérations à réaliser dans certaines méthodes
+- Javadoc => description précise chacune des classes, de leurs méthodes et attributs
+- Portions de code => code qui vous est directement donné
+
+### Diagramme de classes
 
 ```mermaid
 classDiagram
 
-class Eleve {
-    -String prenom
-    -String nom
-    Eleve(String prenom, String nom)
-    +getNom() String
-    +getPrenom() String
+class app::Processeur {
+    main(String[] args) void$
 }
-```
-Au dessus du `main()`, créez une constante `NBRE_MAX_ELEVES` de valeur `20`. Celle-ci représente la taille maximale d'une classe d'élèves.
 
-Dans votre `main()`, déclarez une variable `eleves` permettant de contenir `NBRE_MAX_ELEVES` objets de type `Eleve`. Créez ensuite cette structure de données.
-
-Créez ensuite 5 objets différents de type `Eleve`. Placez ces élèves dans les 4 premières cases de votre tableau, laissez les deux emplacements suivants vides et placez ensuite le dernier élève.
-
-Dans une boucle, parcourez l'ensemble de votre tableau à la recherche d'élèves et , lorsque vous en trouvez un, affichez-le sur la console de la manière suivante :
-```
-L'élève N°0 s'apelle => James Cameron
-L'élève N°1 s'appelle => Mac Haroni
-L'élève N°2 s'appelle => John D'Oeuf
-L'élève N°3 s'appelle => Alex Terrieur
-L'élève N°6 s'appelle => Alain Terrieur
-```
-## Partie 2 : Affichage de la classe par elle même
-Rendez plus intelligente votre classe `Eleve` en apprenant à ses objets à s’afficher eux-mêmes de manière lisible et compréhensible.
-
-On va faire en sorte qu’un `sout( unEleve );` affiche automatiquement son prénom et son nom séparé par un espace.
-
-Surchargez la méthode `toString()` de votre classe Eleve pour faire ceci. Adaptez votre programme principal dans le main() pour en tirer profit.
-```mermaid
-classDiagram
-class Eleve {
-    -String prenom
+class models::CPU {
+    +double UNKNOWN_MIPS$
     -String nom
-    Eleve(String prenom, String nom)
-    +toString() String
+    -int annee
+    -long transistors
+    -double mips
+    +CPU(String nom, int annee, long transistors, double mips)
+    +CPU(String nom, long transistors)
+    +toString String
+    +getAnnee() int
+    +getMips() int
     +getNom() String
-    +getPrenom() String
+    +getTransistors() long
 }
+
+class views::View {
+    +View()
+    +rapport_Debut() void
+    +rapport_AfficherCPU(CPU) void
+    +rapport_Fin() void
+    +setRefCtrl(Controller ctrl)
+    +getRefCtrl(Controller ctrl)
+}
+
+class ctrl::Controller {
+    +Controller()
+    +start() void
+    +setRefView(View view) void
+    +setRefServiceCPU(ServiceCPU service) void
+    +getRefView() View
+    +getRefServiceCPU() ServiceCPU
+}
+
+class services::ServiceCPU {
+    +int NBRE_CPU$
+    -cpus CPU[]
+    +ServiceCPU()
+    +AjouterUnNouveau(CPU) boolean
+    +ObtenirLaListe() CPU[]
+    +NombreDeCPUDansLaListe() int
+    +TaileDeLaListe() int
+    +ObtenirUnElement(int numero) CPU
+    +setRefCtrl(Controller ctrl)
+    +getRefCtrl() Controller
+}
+note for ServiceCPU "NBRE_CPU = 20"
+note for CPU "UNKNOWN_MIPS = .1.0"
+ServiceCPU o--> "0..n" CPU : cpus
+Controller "1" o--> ServiceCPU : refServiceCPU
+ServiceCPU "1" o--> Controller : refController
+View "1" o--> Controller : refCtrl
+Controller "1" o--> View : refView
 ```
-## Partie 3 : Implémentation de la notion de "classe d'élève"
-Créez une nouvelle classe qui représentera la notion de « classe d’élèves » que vous nommerez `Classe`. Vous trouvez tous les détails du contenu de cette classe ci-dessous, dans son diagramme de classe.
-
-```mermaid
-classDiagram
-class Classe {
-    +int NBRE_MAX_ELEVES$
-    -String nom
-    -Eleve[] eleves
-    +Classe(String nom)
-    +ajouteEleve(Eleve eleve) boolean
-    +supprimeEleve(Eleve eleve) boolean
-    +getNombreDePlacesOccupees() int
-    +getNombreDePlacesLibres() int
-    +afficheClasseEtSonContenu() void
-    +getNom() String
-    +getEleves() Eleve[]
-}
-class Eleve {
-    -String prenom
-    -String nom
-    Eleve(String prenom, String nom)
-    +toString() String
-    +getNom() String
-    +getPrenom() String
-}
-note for Classe "NBRE_MAX_ELEVES = 20"
-Classe o--> "0..n" Eleve : eleves
-```
-
-Pour l’implémentation des méthodes de cette classe observez attentivement leurs signatures. Cela vous guidera efficacement sur ce qu’elles doivent faire (bien choisir les noms de méthodes et d’attribut est crucial !).
-Pour les méthodes qui pourraient voir leur travail échouer elles retournent un booléen indiquant si ça s’est bien passé (**true**) ou mal passé (**false**). 
-Dans le doute, demandez au prof, il vous guidera avec plaisir.
-
-Dans le `main()` de votre programme principal, commencez par créer une nouvelle ´Classe´ qui représentera les élèves de la classe **"30021X"**.
-Créer ensuite 5 élèves différents et rajoutez les à votre classe à l'aide de sa méthode adéquate. Pour terminer, affichez le contenu de la classe en appelant sa méthode adéquate.
-
-## Partie 4 : Affichage plus intelligent de la classe
-Rendez votre classe Classe plus intelligente en codant plus adéquatement sa méthode `getEleves()`.
-En effet, il n’est ni utile ni pratique de retourner à l’utilisateur notre tableau d’élèves tel quel, car il est fort probable que celui-ci contienne des cases « vides », c-à-d ne contenant PAS d’élèves (**null**).
-Pourquoi embarrasser l’utilisateur avec un tel résultat ? Lui donner un tableau de taille 20 alors qu’il n’y a que 3 élèves dedans ???
-Il faut lui retourner une liste ne contenant QUE les élèves présents dans cette classe, et rien d’autre. Modifiez la méthode `getEleves()` en conséquence. Testez depuis votre `main()` en appelant cette méthode et en affichant les objets retournés sans vérification de présence d’objets.
