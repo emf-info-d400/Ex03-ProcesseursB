@@ -148,11 +148,11 @@ Nous allons maintenant ré-écrire cette application sous une forme et une struc
 ```mermaid
 classDiagram
 
-class app::Processeur {
+class Processeur {
     main(String[] args)$ void
 }
 
-class models::CPU {
+class CPU {
     +double UNKNOWN_MIPS$
     -String nom
     -int annee
@@ -167,7 +167,7 @@ class models::CPU {
     +getTransistors() long
 }
 
-class views::View {
+class View {
     -Controller ctrl
     +View()
     +rapport_Debut() void
@@ -177,7 +177,7 @@ class views::View {
     +getRefCtrl(Controller ctrl)
 }
 
-class ctrl::Controller {
+class Controller {
     -View view
     -ServiceCPU service
     +Controller()
@@ -188,7 +188,7 @@ class ctrl::Controller {
     +getRefServiceCPU() ServiceCPU
 }
 
-class services::ServiceCPU {
+class ServiceCPU {
     +int NBRE_CPU$
     -cpus CPU[]
     -Controller refCtrl
@@ -216,11 +216,68 @@ Voici le diagramme de séquence de la méthode de la méthode `main()` de la cla
 sequenceDiagram
     participant main
     create participant Controller
-    main-->>Controller: ctrl
-    main-->>ServiceCPU: service
+    main-->>Controller: ctrl = new Controller()
+    create participant ServiceCPU
+    main-->>ServiceCPU: service = new ServiceCPU()
     main->>Controller: setRefServiceCPU(service)
-    main-->>View: view
+    create participant View
+    main-->>View: view = new View()
     main->>Controller: setRefView(view)
     main->>View: setRefCtrl(ctrl)
     main->>ServiceCPU: setRefCtrl(ctrl)
 ```
+
+### Javadoc
+Vous pouvez cliquer sur [ce lien pour obtenir la JavaDoc en HTML](javadoc/PARTIE4/index.html) de l'application Processeur.
+
+### Portions de code
+Voici ci-dessous le code du `start()` de la classe `Controller` :
+```
+/**
+ * Méthode permettant de démarrer le contrôleur et donc la logique du programme.
+ */
+public void start() {
+
+    // Ajouter les CPUS connus
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel 4004", 1971, 2300, 0.06 ) );
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel 8088", 1972, 3500, 0.06 ) );
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel 8086", 1978, 29000, 0.33 ) );
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel 80286", 1982, 134000, 1 ) );
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel 80386", 1985, 275000, 5 ) );
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel 80486", 1989, 1200000, 20 ) );
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel Pentium 1", 1993, 3100000, 100 ) );
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel Pentium 2", 1997, 7500000, 300 ) );
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel Pentium 3", 1999, 9500000, 510 ) );
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel Pentium 4", 2000, 42000000, 1700 ) );
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel Pentium 4 D (Prescott)", 2004, 125000000, 9000 ) );
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel Core 2 Duo (Conroe)", 2006, 291000000, 22000 ) );
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel Core i7 (Quad)", 2008, 731000000, 82300 ) );
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel Core i7 (Gulftown)", 2010, 1170000000, 147600 ) );
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Intel Core i7 (Haswell-E)", 2014, 2600000000L, 238310 ) 
+    getRefWrk().CPU_AjouterUnNouveau( new CPU( "Oracle SPARC M7", 2015, 10000000000L ) );
+
+    // Demander la taille de notre liste de CPU
+    int tailleListeCPU = getRefWrk().CPU_TailleDeLaListe();
+
+    // Demander le nombre d'éléments contenus dans notre liste
+    int nbreElementsDansListeCPU = getRefWrk().CPU_NombreDeCPUDansLaListe();
+
+    // Débuter un nouveau rapport pour l'utilisateur
+    getRefIhm().rapport_Debut();
+
+    // Passer en revue chaque CPU de notre liste
+    for ( int i = 0; i < tailleListeCPU; i++ ) {
+        // Mettre la main sur ce CPU-là
+        CPU cpu = getRefWrk().CPU_ObtenirUnElement( i );
+        // Y a-t-il un CPU ?
+        if ( cpu != null ) {
+            // Oui. Alors l'afficher !
+            getRefIhm().rapport_AfficherCPU( cpu );
+        }
+    }
+
+    // Terminer le nouveau rapport pour l'utilisateur
+    getRefIhm().rapport_Fin();
+}
+```
+
