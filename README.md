@@ -45,7 +45,7 @@ note for CPU "UNKNOWN_MIPS = .1.0"
 Vous pouvez cliquer sur [ce lien pour obtenir la JavaDoc en HTML](javadoc/PARTIE1/index.html) de l'application Processeur.
 
 ### Portions de code
-´´´
+```
 /**
  * LA méthode main() de l'application, là où tout commence mais... tout se finit-il bien là ?
  *
@@ -90,7 +90,7 @@ public static void main( String[] args ) {
         }
     }
 }
-´´´
+```
 ## PARTIE 2 : Surchage de la méthode toString() et découverte des littéraux
 Faites-en sorte qu’un objet `CPU` sache se représenter lui-même sous forme de chaîne de caractères. Pour cela, surchargez sa méthode `toString()` et implémentez-là comme précédemment (= de façon à ce qu’elle produise la même représentation textuelle qu’avant).
 
@@ -149,7 +149,7 @@ Nous allons maintenant ré-écrire cette application sous une forme et une struc
 classDiagram
 
 class app::Processeur {
-    main(String[] args) void$
+    main(String[] args)$ void
 }
 
 class models::CPU {
@@ -168,6 +168,7 @@ class models::CPU {
 }
 
 class views::View {
+    -Controller ctrl
     +View()
     +rapport_Debut() void
     +rapport_AfficherCPU(CPU) void
@@ -177,6 +178,8 @@ class views::View {
 }
 
 class ctrl::Controller {
+    -View view
+    -ServiceCPU service
     +Controller()
     +start() void
     +setRefView(View view) void
@@ -188,6 +191,7 @@ class ctrl::Controller {
 class services::ServiceCPU {
     +int NBRE_CPU$
     -cpus CPU[]
+    -Controller refCtrl
     +ServiceCPU()
     +AjouterUnNouveau(CPU) boolean
     +ObtenirLaListe() CPU[]
@@ -204,4 +208,19 @@ Controller "1" o--> ServiceCPU : refServiceCPU
 ServiceCPU "1" o--> Controller : refController
 View "1" o--> Controller : refCtrl
 Controller "1" o--> View : refView
+```
+
+### Diagramme de séquence
+Voici le diagramme de séquence de la méthode de la méthode `main()` de la classe `Processeur` du package `app` :
+```mermaid
+sequenceDiagram
+    participant main
+    create participant Controller
+    main-->>Controller: ctrl
+    main-->>ServiceCPU: service
+    main->>Controller: setRefServiceCPU(service)
+    main-->>View: view
+    main->>Controller: setRefView(view)
+    main->>View: setRefCtrl(ctrl)
+    main->>ServiceCPU: setRefCtrl(ctrl)
 ```
