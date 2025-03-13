@@ -1,14 +1,20 @@
 # Exercice 03 : Les Processeurs B
+
 ## Durée : 90'
-## Objectifs visés :
+
+## Objectifs visés
+
 Transformation MVC de la solution processeurs
 
 Affinage progressif de la solution :
+
 - Partie 1 – Tranformation en MVC
 - Partie 2 – Changement d’Ihm sans heurts ni impacts sur le reste du projet
 
 ## PARTIE 1 : Transformation en MVC
+
 Nous allons maintenant ré-écrire cette application sous une forme et une structure plus professionnelle. Vous trouverez toute l’information utile directement dans ce document, sous forme de :
+
 - diagrammes des classes => les classes à créer, leurs méthodes et attributs
 - diagrammes de séquence => la séquence d’opérations à réaliser dans certaines méthodes
 - Javadoc => description précise chacune des classes, de leurs méthodes et attributs
@@ -17,6 +23,7 @@ Nous allons maintenant ré-écrire cette application sous une forme et une struc
 > La classe `CPU` doit être reprise intégralement de l'exercice précédent `Ex03-ProcesseursA`. Copier la classe CPU dans ce nouveau projet.
 
 ### Diagramme de classes
+
 ```mermaid
 classDiagram
 
@@ -83,7 +90,9 @@ Controller "1" o--> View : refView
 ```
 
 ### Structure des packages Java
+
 Voici la structure des packages pour chaque classe du projet
+
 ```mermaid
 classDiagram
 namespace processeur {
@@ -113,16 +122,23 @@ namespace services {
 ```
 
 ### Diagramme de séquence
+
 Voici le diagramme de séquence de la méthode de la méthode `main()` de la classe `Processeur` du package `app` :
+
 ```mermaid
 sequenceDiagram
+
     participant main
+    
+    create participant Controller as ctrl 
     main->>Controller: new Controller()
-    Controller-->>main: ctrl
+
+    create participant ServiceCPU as service 
     main->>ServiceCPU: new ServiceCPU()
-    ServiceCPU-->>main: service
+
+    create participant View as view 
     main->>View: new View()
-    View-->>main: view
+
     main->>Controller: setRefServiceCPU(service)
     main->>Controller: setRefView(view)
     main->>ServiceCPU: setRefCtrl(ctrl)
@@ -131,9 +147,11 @@ sequenceDiagram
 ```
 
 ### Javadoc
+
 La Javadoc se trouve directement dans les classes Java. Il ne vous reste plus qu'à remplacer les commentaires `// VOTRE CODE ICI...`
 
 ### Portions de code
+
 La méthode `start()` de la classe `Controller` vous est donnée.
 
 ## PARTIE 2 : Changement d’Ihm
@@ -141,6 +159,7 @@ La méthode `start()` de la classe `Controller` vous est donnée.
 Un des bienfaits de l’architecture MVC c’est qu’on peut changer la façon de travailler (le service) ou la façon de représenter les informations à l’utilisateur (la view) sans impacts pour le reste du projet Java.
 
 Pour le démontrer, remplacez le code de la view par le code ci-dessous. Essayez ensuite l’application:
+
 ```
 package processeur.views;
 
@@ -263,7 +282,7 @@ public class View {
 Bravo : vous venez de tranformer votre application qui affiche désormais les informations dans un tableau Swing minimaliste.
 
 Voici à quoi cela devrait ressembler :
+
 | Sur Windows | Sur Mac |
 | :----: | :----: |
 | ![Aperçu sur Mac](images/processeur_app_mac.png) | ![Aperçu sur Windows](images/processeur_app_windows.png) |
-
