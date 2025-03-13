@@ -95,13 +95,7 @@ Voici la structure des packages pour chaque classe du projet
 
 ```mermaid
 classDiagram
-namespace processeur {
-    class app
-    class models
-    class views
-    class ctrl
-    class services
-}
+
 namespace app {
     class Processeur
 }
