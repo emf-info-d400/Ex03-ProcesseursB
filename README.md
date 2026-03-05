@@ -69,7 +69,7 @@ class Controller {
 
 class ServiceCPU {
     +int NBRE_CPU$
-    -cpus CPU[]
+    -CPU[] cpus 
     -Controller refCtrl
     +ServiceCPU()
     +ajouterUnNouveau(CPU) boolean
