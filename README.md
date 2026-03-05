@@ -38,7 +38,7 @@ class CPU {
     -long transistors
     -double mips
     +CPU(String nom, int annee, long transistors, double mips)
-    +CPU(String nom, long transistors)
+    +CPU(String nom, int annee, long transistors)
     +toString String
     +getAnnee() int
     +getMips() int
